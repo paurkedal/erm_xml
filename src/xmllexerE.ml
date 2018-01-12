@@ -7,14 +7,14 @@ open Xmllexer_generic
 module IterMonad =
 struct
   type input = {
-    buf : string;
+    buf : bytes;
     mutable i : int;
     mutable len : int;
     mutable is_final : bool
   }
 
   let make_chunk size =
-    { buf = String.create size; i = 0; len = 0; is_final = false}
+    { buf = Bytes.create size; i = 0; len = 0; is_final = false}
 
   let is_empty s =
     s.i = s.len
@@ -42,7 +42,7 @@ struct
     if s.is_final then
       Return None
     else if s.i < s.len then
-      let ch1 = s.buf.[s.i] in
+      let ch1 = Bytes.get s.buf s.i in
         s.i <- s.i + 1;
         match ch1 with
           | '\000'..'\127' -> Return (Some (Char.code ch1))
@@ -51,7 +51,7 @@ struct
               if s.is_final then
                 fail IllegalCharacter
               else if s.i < s.len then
-                let ch2 = s.buf.[s.i] in
+                let ch2 = Bytes.get s.buf s.i in
                   s.i <- s.i+1;
                   let n1 = Char.code ch1 in
                   let n2 = Char.code ch2 in
@@ -69,13 +69,13 @@ struct
               if s.is_final then
                 fail IllegalCharacter
               else if s.i < s.len then
-                let ch2 = s.buf.[s.i] in
+                let ch2 = Bytes.get s.buf s.i in
                   s.i <- s.i + 1;
                   let rec cont2 s =
                     if s.is_final then
                       fail IllegalCharacter
                     else if s.i < s.len then
-                      let ch3 = s.buf.[s.i] in
+                      let ch3 = Bytes.get s.buf s.i in
                         s.i <- s.i + 1;
                         let n1 = Char.code ch1
                         and n2 = Char.code ch2
@@ -104,19 +104,19 @@ struct
               if s.is_final then
                 fail IllegalCharacter
               else if s.i < s.len then
-                let ch2 = s.buf.[s.i] in
+                let ch2 = Bytes.get s.buf s.i in
                   s.i <- s.i + 1;
                   let rec cont2 s =
                     if s.is_final then
                       fail IllegalCharacter
                     else if s.i < s.len then
-                      let ch3 = s.buf.[s.i] in
+                      let ch3 = Bytes.get s.buf s.i in
                         s.i <- s.i + 1;
                         let rec cont3 s =
                           if s.is_final then
                             fail IllegalCharacter
                           else if s.i < s.len then
-                            let ch4 = s.buf.[s.i] in
+                            let ch4 = Bytes.get s.buf s.i in
                               s.i <- s.i + 1;
                               let n1 = Char.code ch1
                               and n2 = Char.code ch2
@@ -343,7 +343,7 @@ let parse_document inc =
             | x :: xs -> str.[i] <- x; iteri (succ i) xs
           in
             iteri 0 chs;
-            Printf.eprintf "%d:%d Unexpected character token %S\n" line col str;
+            Printf.eprintf "%d:%d Unexpected character token %S\n" line col (Bytes.to_string str);
             Pervasives.exit 127
         | exn ->
           Printf.eprintf "%d:%d %s\n" line col (Printexc.to_string exn);

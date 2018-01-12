@@ -301,7 +301,7 @@ let parse_document inc =
             | x :: xs -> str.[i] <- x; iteri (succ i) xs
           in
             iteri 0 chs;
-            Printf.eprintf "%d:%d Unexpected character token %S\n" line col str;
+            Printf.eprintf "%d:%d Unexpected character token %S\n" line col (Bytes.to_string str);
             Pervasives.exit 127
         | exn ->
           Printf.eprintf "%d:%d %s\n" line col (Printexc.to_string exn);

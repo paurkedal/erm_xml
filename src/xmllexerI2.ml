@@ -7,7 +7,7 @@ open Xmllexer_generic
 module IterMonad =
 struct
   type input = {
-    buf : string;
+    buf : bytes;
     i : int;
     len : int;
   }
@@ -17,7 +17,7 @@ struct
     | EOF
 
   let empty_chunk = {
-    buf = "";
+    buf = Bytes.create 0;
     i = 0;
     len = 0;
   }
@@ -53,7 +53,7 @@ struct
       | EOF -> Return None, EOF
       | Chunk s ->
         if s.i < s.len then
-          Return (Some s.buf.[s.i]), Chunk {s with i = s.i + 1}
+          Return (Some (Bytes.get s.buf s.i)), Chunk {s with i = s.i + 1}
         else
           get, (Chunk s)
     )
@@ -326,7 +326,7 @@ let parse_document inc =
                   else
                     let str =
                       if size < 8192 then
-                        String.sub buf 0 size
+                        Bytes.sub buf 0 size
                       else
                         buf
                     in
@@ -357,7 +357,7 @@ let parse_document inc =
             | x :: xs -> str.[i] <- x; iteri (succ i) xs
           in
             iteri 0 chs;
-            Printf.eprintf "%d:%d Unexpected character token %S\n" line col str;
+            Printf.eprintf "%d:%d Unexpected character token %S\n" line col (Bytes.to_string str);
             Pervasives.exit 127
         | exn ->
           Printf.eprintf "%d:%d %s\n" line col (Printexc.to_string exn);

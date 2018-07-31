@@ -496,7 +496,7 @@ struct
           start state strm
         )
       )
-    and comment_dash_dash_state state strm =
+    and comment_dash_dash_state _state strm =
       next_char strm not_eof (fun u ->
         if u = u_gt then
           (* end of comment *)

@@ -1,0 +1,6 @@
+(library
+  (name erm_xml)
+  (public_name erm_xml)
+  (wrapped false))
+
+(ocamllex xml_decode xml_encode)

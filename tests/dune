@@ -1,0 +1,18 @@
+(executables
+  (names test1 light_test test)
+  (modules test1 light_test test)
+  (libraries erm_xml))
+
+(executables
+  (names test2)
+  (modules test2)
+  (libraries erm_xml text))
+
+(executables
+  (names test3)
+  (modules test3)
+  (libraries erm_xml lwt lwt.unix))
+
+(alias
+  (name runtest)
+  (deps test1.exe test2.exe test3.exe light_test.exe test.exe))

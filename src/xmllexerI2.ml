@@ -161,7 +161,7 @@ struct
       else if ucs4 <= 0x7ff then
         [(0xc0 lor (ucs4 lsr 6)); (0x80 lor (ucs4 land 0x3f))]
       else if ucs4 <= 0xffff then (
-        if (ucs4 >= 0xd800 & ucs4 < 0xe000) then 
+        if (ucs4 >= 0xd800 && ucs4 < 0xe000) then 
           raise IllegalCharacter;
         [(0xe0 lor (ucs4 lsr 12));
          (0x80 lor ((ucs4 lsr 6) land 0x3f));
@@ -265,7 +265,7 @@ open IterMonad
   
 let parse_document inc =
   let stream = LocatedStream.make_stream () in
-  let buf = String.create 8192 in
+  let buf = Bytes.create 8192 in
   let next_token = M.make_lexer stream in
   let namespaces = Hashtbl.create 1 in
   let () = Hashtbl.add namespaces "xml" Xml.ns_xml in
@@ -313,7 +313,7 @@ let parse_document inc =
   and loop v =
     match v with
       | Return (Some result), s -> loop ((process_token result), s)
-      | Return None, s -> ()
+      | Return None, _s -> ()
       | Continue cont, s ->
         let s =
           match s with
@@ -351,10 +351,10 @@ let parse_document inc =
           Pervasives.exit 127          
         | M.Exn_CharToken u ->
           let chs = M.E.encode_unicode u in
-          let str = String.create (List.length chs) in
+          let str = Bytes.create (List.length chs) in
           let rec iteri i = function
             | [] -> ()
-            | x :: xs -> str.[i] <- x; iteri (succ i) xs
+            | x :: xs -> Bytes.set str i x; iteri (succ i) xs
           in
             iteri 0 chs;
             Printf.eprintf "%d:%d Unexpected character token %S\n" line col (Bytes.to_string str);

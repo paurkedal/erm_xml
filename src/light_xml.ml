@@ -12,7 +12,7 @@ exception Expected of string
 let decode = Xml_decode.decode
 let encode = Xml_encode.encode
 
-let rec attrs_to_string attrs =
+let attrs_to_string attrs =
   let attr_to_string attr =
     match attr with
       | (name, value) -> 
@@ -235,10 +235,10 @@ let parse_stream strm =
           Pervasives.exit 127          
         | XmlParser.Exn_CharToken u ->
           let chs = XmlParser.E.encode_unicode u in
-          let str = String.create (List.length chs) in
+          let str = Bytes.create (List.length chs) in
           let rec iteri i = function
             | [] -> ()
-            | x :: xs -> str.[i] <- x; iteri (succ i) xs
+            | x :: xs -> Bytes.set str i x; iteri (succ i) xs
           in
             iteri 0 chs;
             Printf.eprintf "%d:%d Unexpected character token %S\n" line col (Bytes.to_string str);

@@ -59,7 +59,7 @@ struct
   let emit_end_tag name =
     Printf.printf "</%s>" name
 
-  let emit_doctype doctype =
+  let emit_doctype _doctype =
     ()
       
   let emit_pi target data =

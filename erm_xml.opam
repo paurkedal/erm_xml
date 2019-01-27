@@ -1,17 +1,21 @@
-opam-version: "1.2"
+opam-version: "2.0"
 name: "erm_xml"
 author: "Anastasia Gornostaeva <ermine@sulci.ru>"
 maintainer: "Petter A. Urkedal <paurkedal@gmail.com>"
 homepage: "https://github.com/ermine/xml"
-dev-repo: "https://github.com/paurkedal/erm_xml.git#dev"
+dev-repo: "git+https://github.com/paurkedal/erm_xml.git#dev"
 license: "BSD3"
 
-build: ["dune" "build" "-p" name "-j" jobs]
-build-test: ["dune" "runtest" "-p" name "-j" jobs]
+build: [
+  ["dune" "build" "-p" name "-j" jobs]
+  ["dune" "runtest" "-p" name "-j" jobs] {with-test}
+]
 
 depends: [
   "dune" {build}
-  "lwt" {test}
+  "lwt" {with-test}
   "ocamlfind" {build}
-  "text" {test}
+  "text" {with-test}
 ]
+
+synopsis: "XML stream parser"

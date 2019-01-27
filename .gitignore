@@ -1,8 +1,3 @@
 .merlin
-setup.log
-setup.data
-*.byte
-*.native
-*.docdir
-_build
+/_build
 /erm_xml.install

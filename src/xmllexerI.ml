@@ -59,7 +59,6 @@ module Decoder (I : sig type 'a t
                         val (>>=) : 'a t -> ('a -> 'b t) -> 'b t
                         val return : 'a -> 'a t
                         val fail : exn -> 'a t
-                        type stream
                         val get : char option t end) =
 struct
   open I
@@ -133,9 +132,7 @@ end
 
 module Input =
 struct
-  module D = Decoder (struct include IterMonad
-                             type stream = IterMonad.data
-  end)
+  module D = Decoder (struct include IterMonad end)
 
   exception UnknownEncoding
     

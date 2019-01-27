@@ -1,3 +1,4 @@
+open Erm_xml
 open Xmllexer
 
 module Input =

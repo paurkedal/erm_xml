@@ -2,6 +2,8 @@
  * (c) 2007-2012 Anastasia Gornostaeva
  *)
 
+open Erm_xml
+
 module StringStream =
 struct
   type 'a t = 'a

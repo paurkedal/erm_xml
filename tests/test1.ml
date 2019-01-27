@@ -2,6 +2,7 @@
  * (c) 2007-2012 Anastasia Gornostaeva
  *)
 
+open Erm_xml
 open Xmllexer
 
 module XmlStanza =

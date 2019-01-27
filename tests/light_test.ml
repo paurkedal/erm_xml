@@ -2,6 +2,8 @@
  * (c) 2007-2012 Anastasia Gornostaeva
  *)
 
+open Erm_xml
+
 let _ = Printexc.record_backtrace true
 
 open Light_xml

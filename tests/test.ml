@@ -1,3 +1,5 @@
+open Erm_xml
+
 let () =
   let t = Sys.argv.(1) in
   let f = open_in Sys.argv.(2) in

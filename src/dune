@@ -1,5 +1,6 @@
 (library
   (name erm_xml)
-  (public_name erm_xml))
+  (public_name erm_xml)
+  (libraries camlp-streams))
 
 (ocamllex xml_decode xml_encode)

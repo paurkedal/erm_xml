@@ -228,11 +228,11 @@ let parse_stream strm =
       match exn with
         | XmlParser.Exn_msg msg ->
           Printf.eprintf "%d:%d %s\n" line col msg;
-          Pervasives.exit 127
+          Stdlib.exit 127
         | XmlParser.Exn_ExpectedChar chs ->
           Printf.eprintf "%d:%d Expected '%s'\n" line col
             (String.make 1 (List.hd chs));
-          Pervasives.exit 127          
+          Stdlib.exit 127          
         | XmlParser.Exn_CharToken u ->
           let chs = XmlParser.E.encode_unicode u in
           let str = Bytes.create (List.length chs) in
@@ -242,10 +242,10 @@ let parse_stream strm =
           in
             iteri 0 chs;
             Printf.eprintf "%d:%d Unexpected character token %S\n" line col (Bytes.to_string str);
-            Pervasives.exit 127
+            Stdlib.exit 127
         | exn ->
           Printf.eprintf "%d:%d %s\n" line col (Printexc.to_string exn);
-          Pervasives.exit 127
+          Stdlib.exit 127
 
 let parse_string str =
   let strm = Stream.of_string str in

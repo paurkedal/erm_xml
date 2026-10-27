@@ -330,11 +330,11 @@ let parse_document inc =
       match exn with
         | M.Exn_msg msg ->
           Printf.eprintf "%d:%d %s\n" line col msg;
-          Pervasives.exit 127
+          Stdlib.exit 127
         | M.Exn_ExpectedChar chs ->
           Printf.eprintf "%d:%d Expected '%s'\n" line col
             (String.make 1 (List.hd chs));
-          Pervasives.exit 127          
+          Stdlib.exit 127          
         | M.Exn_CharToken u ->
           let chs = M.E.encode_unicode u in
           let str = Bytes.create (List.length chs) in
@@ -344,9 +344,9 @@ let parse_document inc =
           in
             iteri 0 chs;
             Printf.eprintf "%d:%d Unexpected character token %S\n" line col (Bytes.to_string str);
-            Pervasives.exit 127
+            Stdlib.exit 127
         | exn ->
           Printf.eprintf "%d:%d %s\n" line col (Printexc.to_string exn);
-          Pervasives.exit 127
+          Stdlib.exit 127
 
   

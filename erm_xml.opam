@@ -12,10 +12,9 @@ build: [
 ]
 
 depends: [
-  "dune" {build}
+  "camlp-streams"
+  "dune"
   "lwt" {with-test}
-  "ocamlfind" {build}
-  "text" {with-test}
 ]
 
 synopsis: "XML stream parser"
